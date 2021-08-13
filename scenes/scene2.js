@@ -23,7 +23,7 @@ class Scene2 extends Phaser.Scene {
 		addFullScreenButton('');	
 		addSoundButton();
 		this.time.delayedCall(10000, () => {
-				this.scene.start('Scene3');
+				this.scene.start('Scene4');
 		});		
 	}
 	

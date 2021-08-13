@@ -18,8 +18,7 @@
 	let platforms = [];
 	let level_platforms;
 	let warningImg = false;
-	let dificult;
-	let gameMode;
+	
 	
 	
 	
@@ -50,8 +49,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			physics: {
 				default: 'arcade',
 				arcade: {
-					gravity: { y: 500},
-					debug: true
+					//gravity: { y: 800},
+					debug: false
 				}
 			},
 		};	
@@ -210,16 +209,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	function addPlatform(n){
 		let y = 700;
+		let forceX = 0;
 	    let forceY = 0;
+
 		platforms[n] = _this.physics.add.image(level_platforms[n], y, 'platform1').setOrigin(0,0);
 		platforms[n].setImmovable(true);
 		platforms[n].body.allowGravity = false;
+		platforms[n].setInteractive();
+		_this.input.setDraggable(platforms[n]);	
+
+
 		_this.physics.add.collider(game.player, platforms[n], (player, platform) =>{
 			//console.log('colission'+platform);
+			game.player.setVelocityX(0);
+			
 		});
 
-		platforms[n].setInteractive();
-		_this.input.setDraggable(platforms[n]);		
+		
+		
 		
 		platforms[n].on('dragstart', function(pointer, gameObject, dragX, dragY){
 		});
@@ -231,6 +238,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				for (var i = 0; i < (pointer.y - platforms[n].y ); i++) {
 					//platforms[n].y = pointer.y;	   
 					platforms[n].y++
+					game.player.y++;
 				}
 				//platforms[n].y = dragY;	
 				//console.log(pointer.y);
@@ -241,25 +249,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				
 		platforms[n].on('dragend', function(pointer){
 			console.log('dragend');
+
+			if(n < (platforms.length-1)){
+				forceX = platforms[n+1].x - platforms[n].x;
+			}else{
+				forceX = 100;
+			}
+			
 			forceY = (platforms[n].y - y);
-			console.log(forceY);
-			_this.tweens.add({
-                targets: platforms[n],
-                y: y,
-                duration: 500,
-                ease: 'Elastic',
-                easeParams: [ 1.5, 0.5 ],
-                delay: 50
-            });
-
-
+			
+			launch(forceX, forceY);
 
 			//platforms[n].setImmovable(true);
 			platforms[n].body.allowGravity = false;
+			
+
+
+			_this.tweens.add({
+                targets: platforms[n],
+                y: y,
+                duration: 250,
+                ease: 'Elastic',
+                easeParams: [ 0.5, 0.5 ],
+                delay: 0
+            });
+			
+			
 		});		
 		
 		platforms[n].on('pointerdown', function(pointer, localX, localY, event){			
 			//platforms[n].setImmovable(false);
+			//platforms[n].input.enabled = true;
+			
+			
 		});
 		
 		platforms[n].on('pointerup', function(){			
@@ -270,9 +292,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				   
 			}
 			*/
-
+			//platforms[n].input.enabled = false
 			
 		});		
 
 	}
 	
+	function launch(forceX, forceY){
+		//game.player.setGravityY(0);
+		game.player.setVelocityX(forceX);		
+		//forceY = (forceY+ game.player.body.gravity.y)
+		forceY = forceY * 4;
+		game.player.setVelocityY(-forceY);
+		console.log(' X:'+forceX+' Y:'+forceY);
+	}
