@@ -24,38 +24,7 @@ class Scene5 extends Phaser.Scene {
 		let lifting = this.add.image(game.config.width/2 + 500, game.config.height/2+ 100,'scene5Lifting').setInteractive();
 		
 		level = 1;
-		gameMode = 'cycling';
 		
-		cycling.on('pointerdown', function(pointer, localX, localY, event){ 
-			gameMode = 'cycling';
-			cycling.setTint(0xf18a00);							
-			gameMusic.startGame.play();
-		});		
-				
-		cycling.on('pointerup', function(pointer, localX, localY, event){ 
-			_this.scene.start('StartAmateur');
-		});
-				
-		stretching.on('pointerdown', function(pointer, localX, localY, event){ 
-			gameMode = 'stretching';
-			stretching.setTint(0xf18a00);							
-			gameMusic.startGame.play();
-		});
-		
-		stretching.on('pointerup', function(pointer, localX, localY, event){ 
-			_this.scene.start('StartAmateur');
-		});
-		
-		
-		lifting.on('pointerdown', function(pointer, localX, localY, event){ 
-			gameMode = 'lifting';
-			lifting.setTint(0xf18a00);							
-			gameMusic.startGame.play();
-		});
-					
-		lifting.on('pointerup', function(pointer, localX, localY, event){ 
-			_this.scene.start('StartAmateur');
-		});
 	}
 		
 	update(){

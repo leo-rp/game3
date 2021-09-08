@@ -31,8 +31,8 @@ class Scene3 extends Phaser.Scene {
 		
 		this.add.text(oneFinger.x + 10, 270, "1", style);
 		*/
-
-		this.time.delayedCall(5000, () => {
+		
+		this.time.delayedCall(7000, () => {
 				this.scene.start('Scene4');
 		});		
 

@@ -16,11 +16,16 @@
 	let _this;
 	let level;
 	let platforms = [];
-	let level_platforms;
+	let level_platformsX;
+	let level_platformsY;
+	let level_platformsColor;
 	let warningImg = false;
 	
-	
-	
+	let horizontalCamera; 
+	let currentPlatform;
+	let pointer;
+	let touchDuration = 0;
+	let canLaunch;
 	
 	if(DEBUG){
 		backgroundColor	= '#000fff';
@@ -53,6 +58,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 					debug: false
 				}
 			},
+			input: {
+				activePointers: 1
+			}
 		};	
 		
 		game = new Phaser.Game(config);				
@@ -69,7 +77,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			graphics.fillStyle(0xffffff, 1);
 			graphics.fillRect(0, 0, game.config.width, game.config.height );			
 			_this.backgroundImage = _this.add.image(0, 0, 'background'+n, 0).setOrigin(0,0);
-			_this.backgroundImageA = _this.add.image(0, 0, 'backgroundA', 0).setOrigin(0,0);			
+			_this.backgroundImageA = _this.add.image(0, 0, 'backgroundA', 0).setOrigin(0,0);
+
+
+			//_this.backgroundImage.setScrollFactor(0);
+			_this.backgroundImageA.setScrollFactor(0);
 		}
 	}
 	
@@ -92,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	function addSoundButton(){
 			var soundButton = _this.add.image(game.config.width-24, 126, 'soundButton', 0).setOrigin(1, 0).setInteractive();
+			soundButton.setScrollFactor(0)
+
 			
 			if(_this.sound.mute){
 				soundButton.setFrame(1);
@@ -119,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	function addBackButton(){
 			var backButton = _this.add.image(game.config.width-54, 250, 'homeButton', 0).setInteractive();
+			backButton.setScrollFactor(0);
 			
 			backButton.on('pointerdown', function(){
 				backButton.setTint(0xa61bc9);	
@@ -135,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function addFullScreenButton(color){		
 		if(_this.scale.fullscreen.available){
 			fullScreenButton = _this.add.image(game.config.width-24, 32, 'fullscreen'+color, 0).setOrigin(1, 0).setInteractive();
+			fullScreenButton.setScrollFactor(0);
 
 			fullScreenButton.on('pointerdown', function(){
 				fullScreenButton.setTint(0xa61bc9);	
@@ -208,101 +224,55 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 
 	function addPlatform(n){
-		let y = 700;
+		//let y = 700;
 		let forceX = 0;
 	    let forceY = 0;
 
-		platforms[n] = _this.physics.add.image(level_platforms[n], y, 'platform1').setOrigin(0,0);
+		platforms[n] = _this.physics.add.image(level_platformsX[n], level_platformsY[n], 'platform'+ level_platformsColor[n]).setOrigin(0,0);
+		 
+		platforms[n].setScale(1);
 		platforms[n].setImmovable(true);
 		platforms[n].body.allowGravity = false;
-		platforms[n].setInteractive();
-		_this.input.setDraggable(platforms[n]);	
+		platforms[n].id = n;
 
-
-		_this.physics.add.collider(game.player, platforms[n], (player, platform) =>{
-			//console.log('colission'+platform);
+		_this.physics.add.collider(game.player, platforms[n], (player, platform) =>{			
 			game.player.setVelocityX(0);
-			
-		});
 
-		
-		
-		
-		platforms[n].on('dragstart', function(pointer, gameObject, dragX, dragY){
-		});
-		
-		platforms[n].on('drag', function(pointer, gameObject, dragX, dragY){
-			//if(pointer.y > (y - (platforms[n].height/2))){
-			if(pointer.y > y && pointer.y < (y + 250)){
-				
-				for (var i = 0; i < (pointer.y - platforms[n].y ); i++) {
-					//platforms[n].y = pointer.y;	   
-					platforms[n].y++
-					game.player.y++;
+			if(game.player.body.touching.down && platform.body.touching.up){
+				canLaunch = true;
+				game.player.setTexture('player1');
+				game.player.body.setSize(100, 420)
+				if(platform.id == currentPlatform){			
+				}else{			
+					currentPlatform = platform.id;
 				}
-				//platforms[n].y = dragY;	
-				//console.log(pointer.y);
-			}
-			
-		});
-		
-				
-		platforms[n].on('dragend', function(pointer){
-			console.log('dragend');
-
-			if(n < (platforms.length-1)){
-				forceX = platforms[n+1].x - platforms[n].x;
 			}else{
-				forceX = 100;
+				canLaunch = false;
 			}
 			
-			forceY = (platforms[n].y - y);
-			
-			launch(forceX, forceY);
+		});			
+	}
+	
+	function launch(forceY){
+		
 
-			//platforms[n].setImmovable(true);
-			platforms[n].body.allowGravity = false;
-			
+		forceX = 400;			
+		game.player.setVelocityX(forceX);
+		forceY = forceY * 4;
+		forceY+= 200;		
+		forceY = forceY > 1500 ? 1500 : forceY;
+		game.player.setVelocityY(-forceY);
 
+		console.log(forceY);	
 
-			_this.tweens.add({
-                targets: platforms[n],
-                y: y,
-                duration: 250,
+		
+		_this.tweens.add({
+                targets: platforms[currentPlatform],
+                y: level_platformsY[currentPlatform],
+                duration: 300,
                 ease: 'Elastic',
                 easeParams: [ 0.5, 0.5 ],
                 delay: 0
-            });
-			
-			
-		});		
-		
-		platforms[n].on('pointerdown', function(pointer, localX, localY, event){			
-			//platforms[n].setImmovable(false);
-			//platforms[n].input.enabled = true;
-			
-			
-		});
-		
-		platforms[n].on('pointerup', function(){			
-			/*
-			for (var i = 0; i < (platforms[n].y - ); i++) {
-					//platforms[n].y = pointer.y;	   
-					platforms[n].y++
-				   
-			}
-			*/
-			//platforms[n].input.enabled = false
-			
-		});		
+        });
+	}
 
-	}
-	
-	function launch(forceX, forceY){
-		//game.player.setGravityY(0);
-		game.player.setVelocityX(forceX);		
-		//forceY = (forceY+ game.player.body.gravity.y)
-		forceY = forceY * 4;
-		game.player.setVelocityY(-forceY);
-		console.log(' X:'+forceX+' Y:'+forceY);
-	}

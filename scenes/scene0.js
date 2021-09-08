@@ -37,12 +37,29 @@ class Scene0 extends Phaser.Scene {
 		this.load.image('background', 'assets/gui/background.png');
 		this.load.image('backgroundA', 'assets/gui/backgroundA.png');
 		this.load.image('background1', 'assets/gui/background1.png');
+		this.load.image('background11', 'assets/gui/background11.png');
+		this.load.image('background11Bottom', 'assets/gui/background11Bottom.png');
+
 		this.load.image('cloud', 'assets/gui/cloud.png');		
 
 		this.load.image('invisible', 'assets/gui/invisible.png');		
 
-		this.load.image('player', 'assets/gui/player.png');		
-		this.load.image('platform1', 'assets/gui/platform1.png');		
+		this.load.image('player1', 'assets/gui/player/player1.png');	
+		this.load.image('player2', 'assets/gui/player/player2.png');	
+		//this.load.image('player3', 'assets/gui/player/player3.png');	
+		this.load.image('player4', 'assets/gui/player/player4.png');	
+		//this.load.image('player5', 'assets/gui/player/player5.png');	
+
+		this.load.image('platform1', 'assets/gui/platform1.png');
+		this.load.image('platform2', 'assets/gui/platform2.png');
+		this.load.image('platform3', 'assets/gui/platform3.png');
+		this.load.image('platform4', 'assets/gui/platform4.png');
+		this.load.image('platform5', 'assets/gui/platform5.png');
+		this.load.image('platform6', 'assets/gui/platform6.png');		
+		this.load.image('platform7', 'assets/gui/platform7.png');		
+		this.load.image('platformBottom', 'assets/gui/platformBottom.png');	
+		this.load.image('goal', 'assets/gui/goal.png');				
+		
 		
 		/*buttons*/		
 			this.load.spritesheet('soundButton', 'assets/buttons/soundButton.png', { frameWidth: 64, frameHeight: 64 });
@@ -77,6 +94,9 @@ class Scene0 extends Phaser.Scene {
 			//Scene 3 
 			this.load.image('scene3HowToPlay', 'assets/scenes/scene3/scene3HowToPlay.jpg');			
 			
+			//Scene4
+			this.load.image('scene4GoodJob', 'assets/scenes/scene4/scene4GoodJob.png');			
+
 		
 	}
 	
