@@ -34,11 +34,17 @@ class Scene0 extends Phaser.Scene {
 		this.load.image('rotateDevice', 'assets/gui/rotateDevice.png');		
 		
 		this.load.spritesheet('fullscreen', 'assets/buttons/fullscreen.png', { frameWidth: 64, frameHeight: 64 });
+		
 		this.load.image('background', 'assets/gui/background.png');
-		this.load.image('backgroundA', 'assets/gui/backgroundA.png');
-		this.load.image('background1', 'assets/gui/background1.png');
-		this.load.image('background11', 'assets/gui/background11.png');
-		this.load.image('background11Bottom', 'assets/gui/background11Bottom.png');
+		this.load.image('background1A', 'assets/gui/background1A.png');
+		this.load.image('background1B', 'assets/gui/background1B.png');
+
+		this.load.image('backgroundBottom1A', 'assets/gui/backgroundBottom1A.png');
+		this.load.image('backgroundBottom1B', 'assets/gui/backgroundBottom1B.png');
+		this.load.image('backgroundPixels', 'assets/gui/backgroundPixels.png');
+
+		
+
 
 		this.load.image('cloud', 'assets/gui/cloud.png');		
 

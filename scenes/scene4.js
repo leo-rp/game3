@@ -12,8 +12,14 @@ class Scene4 extends Phaser.Scene {
 		_this = this;			
 		
 		this.cameras.main.fadeIn(500);
-		addBackGround('11');
+		//addBackGround('11');
+		_this.add.image(0, 0, 'background1A', 0).setOrigin(0,0);
+		_this.add.image(2880, 0, 'background1B', 0).setOrigin(0,0);
 		
+		_this.backgroundPixels = _this.add.image(0, 0, 'backgroundPixels', 0).setOrigin(0,0);
+		_this.backgroundPixels.setScrollFactor(0);
+
+
 		addFullScreenButton('');	
 		addSoundButton();		
 		
@@ -53,14 +59,16 @@ class Scene4 extends Phaser.Scene {
     	for(var i = 0; i< 9; i++){
     		addPlatform(i);	
     	}
-    	_this.backgroundImageBottom = _this.add.image(0, 990, 'background11Bottom', 0).setOrigin(0,0);		
+    	_this.add.image(0, 990, 'backgroundBottom1A', 0).setOrigin(0,0);
+    	_this.add.image(2880, 990, 'backgroundBottom1B', 0).setOrigin(0,0);		
+		
 
     	for(var i = 0; i< 9; i++){
     		_this.physics.add.image(platforms[i].x - 60, game.config.height - 120, 'platformBottom').setOrigin(0,0);	
     	}
 
     	game.player.x = platforms[currentPlatform].x + (platforms[currentPlatform].width/2);
-    	game.player.y = platforms[currentPlatform].y - 500;
+    	game.player.y = platforms[currentPlatform].y - 220;
 
     	let goal = _this.physics.add.image(5100, 210, 'goal').setOrigin(0, 0);
     	goal.body.setSize(600, 100).setOffset(0, 750);

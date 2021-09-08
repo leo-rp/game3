@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			},
 			input: {
 				activePointers: 1
-			}
+			} 
 		};	
 		
 		game = new Phaser.Game(config);				
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		forceY = forceY > 1500 ? 1500 : forceY;
 		game.player.setVelocityY(-forceY);
 
-		console.log(forceY);	
+		///console.log(forceY);	
 
 		
 		_this.tweens.add({

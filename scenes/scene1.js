@@ -18,7 +18,7 @@ class Scene1 extends Phaser.Scene {
 		
 
 		game.background = this.add.tileSprite(game.config.width/2, game.config.height/2, 1920, 1080, 'background');
-		let backgroundA = this.physics.add.image(0, -400,'backgroundA').setOrigin(0,0);
+		let backgroundA = this.physics.add.image(0, -400,'backgroundPixels').setOrigin(0,0);
 		backgroundA.setGravity(0, 2000);
 		
 		let backgroundA_invisible = this.physics.add.image(0, 750,'invisible');

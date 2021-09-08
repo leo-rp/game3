@@ -15,7 +15,7 @@ class Scene2 extends Phaser.Scene {
 		//addBackGround('');				
 		
 		game.background = this.add.tileSprite(game.config.width/2, game.config.height/2, 1920, 1080, 'background');
-		let backgroundA = this.add.image(0, 0,'backgroundA').setOrigin(0,0);
+		let backgroundA = this.add.image(0, 0,'backgroundPixels').setOrigin(0,0);
 		
 		
 		game.cloud = this.add.image(1900, 330,'cloud');
