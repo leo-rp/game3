@@ -295,12 +295,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	/*snowFlakes functions */
 	function addSnowFlakes(){
-		for(let i = 0; i < 64; i++){
+		for(let i = 0; i < 128; i++){
 			let x = randomByRange(game.config.width);			
 			let y = randomByRange(game.config.height);
 			let frame = randomByRange(3);
 			frame = frame > 2 ? 2 : frame;				
-			snowFlakes[i] = _this.add.image(x, y, 'snowFlakes', frame).setOrigin(0, 0).setScrollFactor(0);;
+			snowFlakes[i] = _this.add.image(x, y, 'snowFlakes', frame).setOrigin(0, 0).setScrollFactor(0);
 			snowFlakes[i].speed = (randomByRange(10) * 0.2);
 			snowFlakes[i].ticks = randomByRange(1024);
 			snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				snowFlakes[i].x--;				
 			}else{
 				snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
-				snowFlakes[i].y = -20;
+				snowFlakes[i].y = randomByRange(game.config.height);
 				snowFlakes[i].x = randomByRange(game.config.width);
 			}			
 		}	
