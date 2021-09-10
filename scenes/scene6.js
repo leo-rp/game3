@@ -32,10 +32,12 @@ class Scene6 extends Phaser.Scene {
 		*/
 
 		/*=============================*/
-		/*THIRD LEVEL 
-		- numPlatforms : 11
-		- goal limit : 7800		
-		- camera : 8300
+		/*THIRD LEVEL (Aprobado?)
+
+		- numPlatforms : 10
+		- goal limit : 8600
+		- win : 8200
+		- camera : 9000
 		*/
 
 		level_platformsX = [100, 880, 1800, 2700, 3600, 4600, 5500, 6250, 7150, 7950];
