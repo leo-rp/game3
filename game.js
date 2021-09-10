@@ -23,10 +23,11 @@
 	
 	let horizontalCamera; 
 	let currentPlatform;
+	let score;
 	let pointer;
 	let touchDuration = 0;
 	let canLaunch;
-	
+	let snowFlakes = [];
 	if(DEBUG){
 		backgroundColor	= '#000fff';
 	}else{
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		config = {
 			type: Phaser.AUTO,
 			backgroundColor: backgroundColor,		
-			scene: [Scene0, Scene1, Scene2, Scene3, Scene4, Scene5 , Scene6, Scene7, Scene8, Scene9],				
+			scene: [Scene0, Scene1, Scene2, Scene3, Scene4, Scene5 , Scene6],				
 			
 			scale: {			
 				mode: Phaser.Scale.FIT,			
@@ -245,6 +246,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				if(platform.id == currentPlatform){			
 				}else{			
 					currentPlatform = platform.id;
+					score+=10;
+					updateProgressBar(currentPlatform);
 				}
 			}else{
 				canLaunch = false;
@@ -276,3 +279,57 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
 	}
 
+	function updateProgressBar(currentPlatform){
+		let w = game.progressBarFill.width;
+		w = w/level_platformsX.length
+		w = w * currentPlatform;		
+		game.progressBarFill.setCrop(0, 0, w , game.progressBarFill.height);
+		game.scoreText.setText(score);	
+	}
+
+	/**/
+
+	function randomByRange(range){
+		return Math.floor(Math.random() * range)
+	}
+
+	/*snowFlakes functions */
+	function addSnowFlakes(){
+		for(let i = 0; i < 64; i++){
+			let x = randomByRange(game.config.width);			
+			let y = randomByRange(game.config.height);
+			let frame = randomByRange(3);
+			frame = frame > 2 ? 2 : frame;				
+			snowFlakes[i] = _this.add.image(x, y, 'snowFlakes', frame).setOrigin(0, 0).setScrollFactor(0);;
+			snowFlakes[i].speed = (randomByRange(10) * 0.2);
+			snowFlakes[i].ticks = randomByRange(1024);
+			snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
+		}
+	}
+	
+	
+	function updateSnowFlakes(){
+		for(let i = 0; i < snowFlakes.length; i++){				
+			/*if(snowFlakes[i].ticks != 0){
+				snowFlakes[i].ticks--;				
+			}else{
+				snowFlakes[i].ticks = randomByRange(1024);
+				if(snowFlakes[i].frame.name < 2 ){
+					snowFlakes[i].frame.name++;				
+				}else{
+					snowFlakes[i].frame.name = 0;
+				}
+				snowFlakes[i].setFrame(snowFlakes[i].frame.name);
+			}*/
+			
+			if(snowFlakes[i].y < game.config.height){				
+				snowFlakes[i].y+= snowFlakes[i].speed;
+				snowFlakes[i].x--;				
+			}else{
+				snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
+				snowFlakes[i].y = -20;
+				snowFlakes[i].x = randomByRange(game.config.width);
+			}			
+		}	
+	}
+	

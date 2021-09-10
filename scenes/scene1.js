@@ -44,6 +44,8 @@ class Scene1 extends Phaser.Scene {
 		addFullScreenButton('');
 		addSoundButton();		
 		let playButton = this.add.image(800, 800,'playButton').setInteractive();		
+		score = 0;
+		game.score = 0;
 
 		playButton.on('pointerdown', function(){
 			//gameMusic.startGame.play();		
@@ -53,6 +55,8 @@ class Scene1 extends Phaser.Scene {
 		playButton.on('pointerup', function () {
 				this.scene.start('Scene2');
 		}, _this);
+
+
 	}
 	
 	update(){

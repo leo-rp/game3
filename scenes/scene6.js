@@ -1,218 +1,168 @@
 class Scene6 extends Phaser.Scene {
-		 
+	
 	constructor(){
 		super('Scene6');
 	}
-
+	
 	preload(){
-		
+		console.log('preload');
 	}
 	
 	create(){
-		_this = this;
+		_this = this;			
 		
 		this.cameras.main.fadeIn(500);
+		//addBackGround('11');
+		_this.add.image(0, 0, 'background1A', 0).setOrigin(0,0);
+		_this.add.image(2880, 0, 'background1B', 0).setOrigin(0,0);
 		
-		graphics = _this.add.graphics();
-		graphics.clear();
-		
-		addBackGround();
-		vueltas = 0;
+		let backgroundPixels = _this.add.image(0, 0, 'backgroundPixels', 0).setOrigin(0,0);
+		backgroundPixels.setScrollFactor(0);
+		pointer = _this.input.activePointer;
 
-		
+
 		addFullScreenButton('');	
-		addSoundButton();
-		addBackButton();
+		addSoundButton();		
 		
+
+		/* LIMITS
+		(eje x) minimo : 400
+		(eje y) maximo 900 (-y), minimo 650(+y)
+		minimo 10 plataformas maximo 16
+		*/
+
+		/*=============================*/
+		/*THIRD LEVEL (Aprobado?)
+
+		- numPlatforms : 10
+		- goal limit : 8600
+		- win : 8200
+		- camera : 9000
+		*/
+
+		level_platformsX = [100, 880, 1800, 2700, 3600, 4600, 5500, 6250, 7150, 7950];
+		level_platformsY = [790, 780, 830, 850, 760, 870, 740, 800, 720, 820];
+		level_platformsColor = [3, 4, 1, 5, 2, 5, 4, 1, 7, 3];
+        let numPlatforms = 10;
+        let goalX = 8600;        
+        let cameraWidth = 9000;
+
+
+		/*=============================*/
+
+		game.progressBar = _this.add.image(50, 50, 'progressBar', 0).setOrigin(0,0);
+    	game.progressBar.setScrollFactor(0);
+    	game.progressBarFill = _this.add.image(178, 62, 'progressBarFill', 0).setOrigin(0,0);
+    	game.progressBarFill.setScrollFactor(0);
+    	game.progressBarFill.setCrop(0, 0, 0, 0);
+    	_this.add.image(150, 150, 'star3', 0).setOrigin(0,0).setScrollFactor(0);
+
+
+    	 _this.add.image(game.config.width- 400, 50, 'score', 0).setOrigin(0,0).setScrollFactor(0);
+    	
+    	let style = {fontFamily: 'gotham-bold', fontSize: 60, color: "#ffffff", align: 'center', fontStyle: 'italic'};
+		game.scoreText = this.add.text(1600, 65, score+"", style);
+		game.scoreText.setScrollFactor(0);
 		
-		let repetitions = this.add.image(100, 80,'repetitions').setOrigin(0,0);
-		let style = {fontFamily: 'gotham-bold', fontSize: 60, color: "#ffffff", align: 'center' };
+
+
+		/*player*/		
+		game.player  = this.physics.add.image(250, 100, 'player1');		
+		game.player.body.setSize(100, 420)
+
+		game.player.setBounce(0.1);
+    	//game.player.setCollideWorldBounds(false); // don't go out of the map
+    	game.player.setGravity(0, 1000)
+    	_this.cameras.main.setBounds(0,0, cameraWidth, game.config.height);
+    	_this.cameras.main.startFollow(game.player);
+    	//_this.cameras.main.setZoom(2);    	
+    	
+    	currentPlatform = game.lastPlatform ? game.lastPlatform: 0;
+    	score = game.score ? game.score: 0;
+
+    	canLaunch = true;
+    	
+    	for(var i = 0; i< numPlatforms; i++){
+    		addPlatform(i);	
+    	}
+    	_this.add.image(0, 990, 'backgroundBottom1A', 0).setOrigin(0,0);
+    	_this.add.image(2880, 990, 'backgroundBottom1B', 0).setOrigin(0,0);		
 		
-		this.add.text(repetitions.x +70, repetitions.y +50, "Repeticiones", style);
-		repetitionText = this.add.text(repetitions.x +200, repetitions.y +150, vueltas+"/20", style);
-		
-		let oneFinger = this.add.image(200, 870,'oneFinger');
-		let bike = this.add.image(game.config.width/2+ 50, game.config.height/2 + 50,'bike');
+
+    	for(var i = 0; i< numPlatforms; i++){
+    		_this.physics.add.image(platforms[i].x - 60, game.config.height - 120, 'platformBottom').setOrigin(0,0);	
+    	}
+
+    	game.player.x = platforms[currentPlatform].x + (platforms[currentPlatform].width/2);
+    	game.player.y = platforms[currentPlatform].y - 220;
+
+    	let goal = _this.physics.add.image(goalX, 210, 'goal').setOrigin(0, 0);
+    	goal.body.setSize(600, 100).setOffset(-100, 750);
+    	goal.setImmovable(true)
+
+    	
+    	
+    	let win = _this.physics.add.image(cameraWidth-960, 540, 'scene6GoodJob');
+    	win.setVisible(false);
+    	
+    	updateProgressBar(currentPlatform)
+
+    	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
+    		/*win*/
+			if(game.player.body.touching.down && goal.body.touching.up){
+				game.player.setVelocityX(0.4);
+				game.player.setVelocityY(0);	
+				//win.x = _this.cameras.main.midPoint.x;
+				//win.y = _this.cameras.main.midPoint.y;
+				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);
+				game.lastPlatform = 0;
+				game.score = score;
+
+				this.time.delayedCall(600, () => {
+					win.setVisible(true);
+				});
+
 				
-		pedal = this.add.sprite(bike.x- 105, bike.y+ 220, 'pedal');
-		pedal.setOrigin(0, 0.5);
-		pedal.rotation = 1.5;
-		
-		circle = this.add.image(0,0, 'circle');		
-		fingerPrint = this.add.sprite(pedal.x, pedal.y + 200,'fingerPrint');
-		speedoMeter = this.add.image(1800, 730,'speedoMeter');		
-		
-		meter = this.add.image(speedoMeter.x - 30 , 940, 'meter');
-		meter.setOrigin(0, 0.5);
-		
-		container1 = this.add.container(bike.x - 100, bike.y + 210, [circle]);
-		container1.setSize(circle.width, circle.height);
-		container1.setInteractive();
-		this.input.setDraggable(container1);
-		
-		canWorkout = true;
-		container1.on('dragstart', function(pointer, gameObject, dragX, dragY){});
-		
-		container1.on('drag', function(pointer, gameObject, dragX, dragY){
-			if (canWorkout){
-				
-				if(pointer.x > (pedal.x - 200)  && pointer.x < (pedal.x + 200)){
-					fingerPrint.x = pointer.x;
-				}
-				
-				if(pointer.y > (pedal.y - 200) && pointer.y < (pedal.y + 200)){
-					fingerPrint.y = pointer.y;
-				}
-				
-				target = Phaser.Math.Angle.BetweenPoints(pedal, pointer);				
-				pedal.rotation = target;				
-				checkPedalPoints();
-				gameMusic.mainTheme.setVolume(0.5);
-				gameMusic.bike.setVolume(5);
-				if(!gameMusic.bike.isPlaying){
-					gameMusic.bike.play();
-				}
-			}			
-		});
-		
-				
-		container1.on('dragend', function(pointer){			
-			circle.clearTint();
-			pedal.rotation = Phaser.Math.Angle.RotateTo(pedal.rotation, 90, 500);
-			points = [];			
-			gameMusic.bike.pause();
-			gameMusic.mainTheme.setVolume(1);
-		});		
-		
-		container1.on('pointerdown', function(){
-			userTouch = true;
-		});
-		
-		container1.on('pointerup', function(){
-			userTouch = false;
-			circle.clearTint();
-			gameMusic.bike.pause();
-			gameMusic.mainTheme.setVolume(1);
-		});
-	
-		tooFast = this.add.image(game.config.width/2, 220,'tooFast');
-		tooFast.setVisible(false);
-	
-	
-	}
-	
-	
-	
-	update(){
+				this.time.delayedCall(10000, () => {
+					this.scene.start('Scene1');
+				});
+			}
 			
-
-		if( meter.y >= 500 && meter.y <= 940 ){						
-			meter.y += level;
-		}
-
-		if(meter.y < 500){
-			meter.y = 500;				
-		}
-		
-		if(level == 1){
-			if(meter.y < 600){
-				meter.y+=1;
-				if(!tooFast.visible){						
-					tooFast.setVisible(true);					
-					_this.time.delayedCall(4000, () => {						
-						tooFast.setVisible(false);							
-					});
-				}
-			}				
-		}
-					
-		if(userTouch){							
-			circle.setTint(colors[0]);
-				
-			if(meter.y < 731 ){
-				circle.setTint(colors[1]);				
-			}
-						
-			if(meter.y < 600){
-				circle.setTint(colors[2]);	
-					
-			}
-		}	
-	}
-}
-
-
-function vuelta(){	
-	
-	
-	if(vueltas <= 20){
-		meter.y -= 80; 
-		
-		
-		if(level == 1){
-			if(meter.y > 600){
-				vueltas+=1;		
-				repetitionText.setText(vueltas+"/20");	
-				gameMusic.repetition.play();
-			}else{
-				
-			}			
-		}else{//level 2
-			//if(meter.y < 600){
-				vueltas+=1;		
-				repetitionText.setText(vueltas+"/20");	
-				gameMusic.repetition.play();
-			//}
-		}	
-	}
-	
-	if(vueltas == 20){
-		canWorkout = false;	
-		gameMusic.startGame.play();
-		
-		_this.time.delayedCall(3000, () => {
-				
-			if (level == 1){	
-				//gameMusic.mainTheme.setVolume(1);
-				_this.scene.start('FinishedAmateur');	
-			}
-
-			if (level == 2){					
-				gameGoals[0] = true;
-				_this.scene.start('Scene7');
-				
-				//gameMusic.mainTheme.setVolume(1);
-			}				
 		});		
+
+
+		_this.input.on('pointerdown', function(){
+		});
+
+		_this.input.on('pointerup', function(){			
+			if(canLaunch){
+				launch(touchDuration);
+				game.player.setTexture('player4');
+				game.player.body.setSize(200, 420)
+				canLaunch = false;				
+				touchDuration = 0;
+			}
+		});
+	}
+		
+	update(){
+		
+		if(game.player.y > (game.config.height + 400)){
+			game.lastPlatform = currentPlatform;
+			game.score = score;
+			_this.scene.restart();
+		}
+
+		if(pointer.isDown && canLaunch){
+			touchDuration+=6;
+			game.player.setTexture('player2');
+			game.player.body.setSize(100, 382)
+			
+			if(platforms[currentPlatform].y < (game.config.height - 150)){				
+				platforms[currentPlatform].y+= 6;
+				game.player.y+= 6;				
+			}
+			
+		}
 	}	
 }
-
-
-function checkPedalPoints(){		
-	let angle = parseInt(pedal.angle.toFixed());
-		
-	if (angle >= 45 && angle <= 135) {		  
-		points[0] = 1;		 			
-	}
-		
-	if (angle >= 135 && angle <= 180) {		  
-		points[1] = 2;
-	}
-				
-	if (angle >= -135 && angle <= -45) {		  
-	  points[2] = 3;
-	}
-	
-	if (angle >= -45 && angle <= 0) {		  
-	  points[3] = 4;
-	
-		if( (points[0] == 1) &&  (points[1] == 2) && (points[2] == 3) && (points[3] == 4)){
-				points = [];
-				vuelta();
-		}		  
-	}
-		
-		
-		
-}
-	
