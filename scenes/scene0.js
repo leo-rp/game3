@@ -101,14 +101,18 @@ class Scene0 extends Phaser.Scene {
 			this.load.image('scene3HowToPlay', 'assets/scenes/scene3/scene3HowToPlay.jpg');			
 			
 			//Scene4
-			this.load.image('background1A', 'assets/scenes/scene4/background1A.png');
-			this.load.image('background1B', 'assets/scenes/scene4/background1B.png');
-			this.load.image('backgroundBottom1A', 'assets/scenes/scene4/backgroundBottom1A.png');
-			this.load.image('backgroundBottom1B', 'assets/scenes/scene4/backgroundBottom1B.png');
+			this.load.image('background4A', 'assets/scenes/scene4/background4A.png');
+			this.load.image('background4B', 'assets/scenes/scene4/background4B.png');
+			this.load.image('backgroundBottom4A', 'assets/scenes/scene4/backgroundBottom4A.png');
+			this.load.image('backgroundBottom4B', 'assets/scenes/scene4/backgroundBottom4B.png');
 			this.load.image('scene4GoodJob', 'assets/scenes/scene4/scene4GoodJob.png');			
 
 			//Scene5
+			this.load.image('background5', 'assets/scenes/scene5/background5.png');			
+			this.load.image('backgroundBottom5', 'assets/scenes/scene5/backgroundBottom5.png')
 			this.load.image('scene5GoodJob', 'assets/scenes/scene5/scene5GoodJob.png');			
+			this.load.spritesheet('snowFlakes', 'assets/scenes/scene5/snowFlakes.png', { frameWidth: 64, frameHeight: 64 });
+
 
 			//Scene6
 			this.load.image('scene6GoodJob', 'assets/scenes/scene6/scene6GoodJob.png');			

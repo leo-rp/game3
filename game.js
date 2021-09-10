@@ -27,7 +27,7 @@
 	let pointer;
 	let touchDuration = 0;
 	let canLaunch;
-	
+	let snowFlakes = [];
 	if(DEBUG){
 		backgroundColor	= '#000fff';
 	}else{
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				default: 'arcade',
 				arcade: {
 					//gravity: { y: 800},
-					debug: true
+					debug: false
 				}
 			},
 			input: {
@@ -286,3 +286,50 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		game.progressBarFill.setCrop(0, 0, w , game.progressBarFill.height);
 		game.scoreText.setText(score);	
 	}
+
+	/**/
+
+	function randomByRange(range){
+		return Math.floor(Math.random() * range)
+	}
+
+	/*snowFlakes functions */
+	function addSnowFlakes(){
+		for(let i = 0; i < 64; i++){
+			let x = randomByRange(game.config.width);			
+			let y = randomByRange(game.config.height);
+			let frame = randomByRange(3);
+			frame = frame > 2 ? 2 : frame;				
+			snowFlakes[i] = _this.add.image(x, y, 'snowFlakes', frame).setOrigin(0, 0).setScrollFactor(0);;
+			snowFlakes[i].speed = (randomByRange(10) * 0.2);
+			snowFlakes[i].ticks = randomByRange(1024);
+			snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
+		}
+	}
+	
+	
+	function updateSnowFlakes(){
+		for(let i = 0; i < snowFlakes.length; i++){				
+			/*if(snowFlakes[i].ticks != 0){
+				snowFlakes[i].ticks--;				
+			}else{
+				snowFlakes[i].ticks = randomByRange(1024);
+				if(snowFlakes[i].frame.name < 2 ){
+					snowFlakes[i].frame.name++;				
+				}else{
+					snowFlakes[i].frame.name = 0;
+				}
+				snowFlakes[i].setFrame(snowFlakes[i].frame.name);
+			}*/
+			
+			if(snowFlakes[i].y < game.config.height){				
+				snowFlakes[i].y+= snowFlakes[i].speed;
+				snowFlakes[i].x--;				
+			}else{
+				snowFlakes[i].setAlpha(randomByRange(10) * 0.2);
+				snowFlakes[i].y = -20;
+				snowFlakes[i].x = randomByRange(game.config.width);
+			}			
+		}	
+	}
+	

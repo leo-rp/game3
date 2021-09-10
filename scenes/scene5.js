@@ -13,8 +13,10 @@ class Scene5 extends Phaser.Scene {
 		
 		this.cameras.main.fadeIn(500);
 		//addBackGround('11');
-		_this.add.image(0, 0, 'background1A', 0).setOrigin(0,0);
-		_this.add.image(2880, 0, 'background1B', 0).setOrigin(0,0);
+		_this.add.image(0, 0, 'background5', 0).setOrigin(0,0);
+		_this.add.image(2800, 0, 'background5', 0).setOrigin(0,0);
+		_this.add.image(5600, 0, 'background5', 0).setOrigin(0,0);
+		
 		
 		let backgroundPixels = _this.add.image(0, 0, 'backgroundPixels', 0).setOrigin(0,0);
 		backgroundPixels.setScrollFactor(0);
@@ -84,13 +86,16 @@ class Scene5 extends Phaser.Scene {
     	for(var i = 0; i< numPlatforms; i++){
     		addPlatform(i);	
     	}
-    	_this.add.image(0, 990, 'backgroundBottom1A', 0).setOrigin(0,0);
-    	_this.add.image(2880, 990, 'backgroundBottom1B', 0).setOrigin(0,0);		
+    	_this.add.image(0, 990, 'backgroundBottom5', 0).setOrigin(0,0);
+    	_this.add.image(2800, 990, 'backgroundBottom5', 0).setOrigin(0,0);
+    	_this.add.image(5600, 990, 'backgroundBottom5', 0).setOrigin(0,0);
+    	
 		
-
+    	/*
     	for(var i = 0; i< numPlatforms; i++){
     		_this.physics.add.image(platforms[i].x - 60, game.config.height - 120, 'platformBottom').setOrigin(0,0);	
     	}
+    	*/
 
     	game.player.x = platforms[currentPlatform].x + (platforms[currentPlatform].width/2);
     	game.player.y = platforms[currentPlatform].y - 220;
@@ -142,9 +147,13 @@ class Scene5 extends Phaser.Scene {
 				touchDuration = 0;
 			}
 		});
+
+		addSnowFlakes();
 	}
 		
 	update(){
+
+		updateSnowFlakes();
 		
 		if(game.player.y > (game.config.height + 400)){
 			game.lastPlatform = currentPlatform;

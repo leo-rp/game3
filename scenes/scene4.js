@@ -13,8 +13,8 @@ class Scene4 extends Phaser.Scene {
 		
 		this.cameras.main.fadeIn(500);
 		//addBackGround('11');
-		_this.add.image(0, 0, 'background1A', 0).setOrigin(0,0);
-		_this.add.image(2880, 0, 'background1B', 0).setOrigin(0,0);
+		_this.add.image(0, 0, 'background4A', 0).setOrigin(0,0);
+		_this.add.image(2880, 0, 'background4B', 0).setOrigin(0,0);
 		
 		let backgroundPixels = _this.add.image(0, 0, 'backgroundPixels', 0).setOrigin(0,0);
 		backgroundPixels.setScrollFactor(0);
@@ -86,8 +86,8 @@ class Scene4 extends Phaser.Scene {
     	for(var i = 0; i< numPlatforms; i++){
     		addPlatform(i);	
     	}
-    	_this.add.image(0, 990, 'backgroundBottom1A', 0).setOrigin(0,0);
-    	_this.add.image(2880, 990, 'backgroundBottom1B', 0).setOrigin(0,0);		
+    	_this.add.image(0, 990, 'backgroundBottom4A', 0).setOrigin(0,0);
+    	_this.add.image(2880, 990, 'backgroundBottom4B', 0).setOrigin(0,0);		
 		
 
     	for(var i = 0; i< numPlatforms; i++){
