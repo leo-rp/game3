@@ -23,6 +23,7 @@
 	
 	let horizontalCamera; 
 	let currentPlatform;
+	let score;
 	let pointer;
 	let touchDuration = 0;
 	let canLaunch;
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		config = {
 			type: Phaser.AUTO,
 			backgroundColor: backgroundColor,		
-			scene: [Scene0, Scene1, Scene2, Scene3, Scene4, Scene5 , Scene6, Scene7, Scene8, Scene9],				
+			scene: [Scene0, Scene1, Scene2, Scene3, Scene4, Scene5 , Scene6],				
 			
 			scale: {			
 				mode: Phaser.Scale.FIT,			
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				default: 'arcade',
 				arcade: {
 					//gravity: { y: 800},
-					debug: false
+					debug: true
 				}
 			},
 			input: {
@@ -245,6 +246,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				if(platform.id == currentPlatform){			
 				}else{			
 					currentPlatform = platform.id;
+					score+=10;
+					updateProgressBar(currentPlatform);
 				}
 			}else{
 				canLaunch = false;
@@ -276,3 +279,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
 	}
 
+	function updateProgressBar(currentPlatform){
+		let w = game.progressBarFill.width;
+		w = w/level_platformsX.length
+		w = w * currentPlatform;		
+		game.progressBarFill.setCrop(0, 0, w , game.progressBarFill.height);
+		game.scoreText.setText(score);	
+	}

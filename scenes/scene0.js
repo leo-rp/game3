@@ -36,19 +36,17 @@ class Scene0 extends Phaser.Scene {
 		this.load.spritesheet('fullscreen', 'assets/buttons/fullscreen.png', { frameWidth: 64, frameHeight: 64 });
 		
 		this.load.image('background', 'assets/gui/background.png');
-		this.load.image('background1A', 'assets/gui/background1A.png');
-		this.load.image('background1B', 'assets/gui/background1B.png');
-
-		this.load.image('backgroundBottom1A', 'assets/gui/backgroundBottom1A.png');
-		this.load.image('backgroundBottom1B', 'assets/gui/backgroundBottom1B.png');
 		this.load.image('backgroundPixels', 'assets/gui/backgroundPixels.png');
-
-		
-
 
 		this.load.image('cloud', 'assets/gui/cloud.png');		
 
 		this.load.image('invisible', 'assets/gui/invisible.png');		
+		this.load.image('progressBar', 'assets/gui/progressBar.png');
+		this.load.image('progressBarFill', 'assets/gui/progressBarFill.png');
+		this.load.image('score', 'assets/gui/score.png');		
+		this.load.image('star1', 'assets/gui/star1.png');		
+		this.load.image('star2', 'assets/gui/star2.png');		
+		this.load.image('star3', 'assets/gui/star3.png');		
 
 		this.load.image('player1', 'assets/gui/player/player1.png');	
 		this.load.image('player2', 'assets/gui/player/player2.png');	
@@ -56,14 +54,16 @@ class Scene0 extends Phaser.Scene {
 		this.load.image('player4', 'assets/gui/player/player4.png');	
 		//this.load.image('player5', 'assets/gui/player/player5.png');	
 
-		this.load.image('platform1', 'assets/gui/platform1.png');
-		this.load.image('platform2', 'assets/gui/platform2.png');
-		this.load.image('platform3', 'assets/gui/platform3.png');
-		this.load.image('platform4', 'assets/gui/platform4.png');
-		this.load.image('platform5', 'assets/gui/platform5.png');
-		this.load.image('platform6', 'assets/gui/platform6.png');		
-		this.load.image('platform7', 'assets/gui/platform7.png');		
-		this.load.image('platformBottom', 'assets/gui/platformBottom.png');	
+
+
+		this.load.image('platform1', 'assets/gui/platforms/platform1.png');
+		this.load.image('platform2', 'assets/gui/platforms/platform2.png');
+		this.load.image('platform3', 'assets/gui/platforms/platform3.png');
+		this.load.image('platform4', 'assets/gui/platforms/platform4.png');
+		this.load.image('platform5', 'assets/gui/platforms/platform5.png');
+		this.load.image('platform6', 'assets/gui/platforms/platform6.png');		
+		this.load.image('platform7', 'assets/gui/platforms/platform7.png');		
+		this.load.image('platformBottom', 'assets/gui/platforms/platformBottom.png');	
 		this.load.image('goal', 'assets/gui/goal.png');				
 		
 		
@@ -101,7 +101,17 @@ class Scene0 extends Phaser.Scene {
 			this.load.image('scene3HowToPlay', 'assets/scenes/scene3/scene3HowToPlay.jpg');			
 			
 			//Scene4
+			this.load.image('background1A', 'assets/scenes/scene4/background1A.png');
+			this.load.image('background1B', 'assets/scenes/scene4/background1B.png');
+			this.load.image('backgroundBottom1A', 'assets/scenes/scene4/backgroundBottom1A.png');
+			this.load.image('backgroundBottom1B', 'assets/scenes/scene4/backgroundBottom1B.png');
 			this.load.image('scene4GoodJob', 'assets/scenes/scene4/scene4GoodJob.png');			
+
+			//Scene5
+			this.load.image('scene5GoodJob', 'assets/scenes/scene5/scene5GoodJob.png');			
+
+			//Scene6
+			this.load.image('scene6GoodJob', 'assets/scenes/scene6/scene6GoodJob.png');			
 
 		
 	}
