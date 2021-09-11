@@ -25,7 +25,7 @@ class Scene2 extends Phaser.Scene {
 				this.scene.start('Scene3');
 		});		
 
-		let nextSceneButton = this.add.image(1510, 880,'nextSceneButton').setInteractive().setScale(0.4);		
+		let nextSceneButton = this.add.image(1520, 880,'nextSceneButton').setInteractive().setScale(0.5);		
 		nextSceneButton.on('pointerdown', function(){
 			gameMusic.startGame.play();		
 			nextSceneButton.setTint(0xf18a00);				
