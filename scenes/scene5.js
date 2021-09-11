@@ -100,6 +100,18 @@ class Scene5 extends Phaser.Scene {
     	let win = _this.physics.add.image(cameraWidth-960, 600, 'scene5GoodJob').setDepth(1);
     	win.setVisible(false);
     	let winMusic = true;
+
+
+		game.nextSceneButton = this.add.image(7880, 910,'nextSceneButton').setInteractive().setScale(0.5).setDepth(1);
+		game.nextSceneButton.setVisible(false);
+		game.nextSceneButton.on('pointerdown', function(){
+			gameMusic.startGame.play();		
+			game.nextSceneButton.setTint(0xf18a00);				
+		});
+		
+		game.nextSceneButton.on('pointerup', function () {
+				this.scene.start('Scene6');
+		}, _this);
     	
     	updateProgressBar(currentPlatform)
 
@@ -119,6 +131,7 @@ class Scene5 extends Phaser.Scene {
 
 				this.time.delayedCall(600, () => {
 					win.setVisible(true);
+					game.nextSceneButton.setVisible(true);
 				});
 				
 				this.time.delayedCall(10000, () => {

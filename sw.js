@@ -1,7 +1,6 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('saltoalalivio').then((cache) => cache.addAll([
-    	
+    caches.open('saltoalalivio').then((cache) => cache.addAll([    	
 		'./',
 		'./favicon.ico',
 		'./favicon-16x16.png',
@@ -14,18 +13,17 @@ self.addEventListener('install', (e) => {
 		'./scenes/scene3.js',
 		'./scenes/scene4.js',
 		'./scenes/scene5.js',
-		'./scenes/scene6.js',
-		'./scenes/scene7.js',	
+		'./scenes/scene6.js',		
 		'./lib/js/phaser.min.js',		
 		'./assets/buttons/closeButton.png',
 		'./assets/buttons/fullscreen.png',		
+		'./assets/buttons/nextSceneButton.png',		
 		'./assets/buttons/playButton.png',			
 		'./assets/buttons/soundButton.png',		
 		'./assets/fonts/gotham_bold.otf',
 		'./assets/fonts/gotham_medium.otf',
 		'./assets/fonts/gotham_regular.otf',
-		'./assets/gui/rotateDevice.png',				
-		
+		'./assets/gui/rotateDevice.png',			
 		'./assets/gui/background.png',
 		'./assets/gui/backgroundPixels.png',
 		'./assets/gui/cloud.png',		
@@ -89,8 +87,7 @@ self.addEventListener('install', (e) => {
 		'./icon/mstile-150x150.png',
 		'./icon/android-chrome-512x512.png',
 		'./icon/browserconfig.xml',
-		'./icon/safari-pinned-tab.svg',
-		
+		'./icon/safari-pinned-tab.svg',		
 		
     ])),
   );
@@ -102,5 +99,3 @@ self.addEventListener('fetch', (e) => {
     caches.match(e.request).then((response) => response || fetch(e.request)),
   );
 });
-
-

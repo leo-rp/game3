@@ -104,32 +104,6 @@ class Scene4 extends Phaser.Scene {
     	let win = _this.physics.add.image(cameraWidth- 960, 600, 'scene4GoodJob').setDepth(1);
     	win.setVisible(false);
     	let winMusic = true;
-    	updateProgressBar(currentPlatform)
-
-    	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
-    		/*win*/
-			if(game.player.body.touching.down && goal.body.touching.up){
-				game.player.setVelocityX(0.4);
-				game.player.setVelocityY(0);			
-				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);				
-				game.lastPlatform = 0;
-				game.score = score;
-				if(winMusic){
-						gameMusic.win.play();						
-						winMusic = false;
-				}
-
-				this.time.delayedCall(600, () => {
-					win.setVisible(true);
-				});
-				
-
-				this.time.delayedCall(10000, () => {
-					this.scene.start('Scene5');
-				});
-			}
-			
-		});		
 
 
 		_this.input.on('pointerdown', function(){
@@ -146,6 +120,50 @@ class Scene4 extends Phaser.Scene {
 				touchDuration = 0;
 			}
 		});
+
+
+		game.nextSceneButton = this.add.image(5320, 910,'nextSceneButton').setInteractive().setScale(0.5).setDepth(1);
+		game.nextSceneButton.setVisible(false);
+		game.nextSceneButton.on('pointerdown', function(){
+			gameMusic.startGame.play();		
+			game.nextSceneButton.setTint(0xf18a00);				
+		});
+		
+		game.nextSceneButton.on('pointerup', function () {
+				this.scene.start('Scene5');
+		}, _this);
+
+
+
+		updateProgressBar(currentPlatform)
+
+    	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
+    		/*win*/
+			if(game.player.body.touching.down && goal.body.touching.up){
+				game.player.setVelocityX(0.4);
+				game.player.setVelocityY(0);			
+				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);				
+				game.lastPlatform = 0;
+				game.score = score;
+				if(winMusic){
+						gameMusic.win.play();						
+						winMusic = false;
+				}
+
+				this.time.delayedCall(600, () => {
+					win.setVisible(true);
+					game.nextSceneButton.setVisible(true);
+				});
+				
+
+				this.time.delayedCall(10000, () => {
+					this.scene.start('Scene5');
+				});
+			}
+			
+		});		
+
+
 	}
 		
 	update(){

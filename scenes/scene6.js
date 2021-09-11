@@ -109,6 +109,17 @@ class Scene6 extends Phaser.Scene {
     	let winMusic = true;
     	updateProgressBar(currentPlatform)
 
+    	game.nextSceneButton = this.add.image(8630, 880,'nextSceneButton').setInteractive().setScale(0.5).setDepth(1);
+		game.nextSceneButton.setVisible(false);
+		game.nextSceneButton.on('pointerdown', function(){
+			gameMusic.startGame.play();		
+			game.nextSceneButton.setTint(0xf18a00);				
+		});
+		
+		game.nextSceneButton.on('pointerup', function () {
+				this.scene.start('Scene1');
+		}, _this);
+
     	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
     		/*win*/
 			if(game.player.body.touching.down && goal.body.touching.up){
@@ -127,6 +138,7 @@ class Scene6 extends Phaser.Scene {
 
 				this.time.delayedCall(600, () => {
 					win.setVisible(true);
+					game.nextSceneButton.setVisible(true);
 				});
 
 				

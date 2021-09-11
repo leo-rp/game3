@@ -42,6 +42,7 @@ class Scene1 extends Phaser.Scene {
 
 		gameMusic.mainTheme.loop = true;
 		gameMusic.mainTheme.play();		
+		gameMusic.mainTheme.setVolume(0.2);
 
 		playButton.on('pointerdown', function(){
 			gameMusic.startGame.play();		

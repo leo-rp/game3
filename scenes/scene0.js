@@ -64,6 +64,7 @@ class Scene0 extends Phaser.Scene {
 		/*buttons*/		
 			this.load.spritesheet('soundButton', 'assets/buttons/soundButton.png', { frameWidth: 64, frameHeight: 64 });
 			this.load.spritesheet('closeButton', 'assets/buttons/closeButton.png', { frameWidth: 64, frameHeight: 64 });			
+			this.load.image('nextSceneButton', 'assets/buttons/nextSceneButton.png');			
 
 		/* Audio */		
 			this.load.audio('jump', 'assets/music/jump.wav');

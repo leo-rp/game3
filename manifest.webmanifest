@@ -1,28 +1,28 @@
 {
     "name": "Salto al Alivio",
     "short_name": "Salto al Alivio",
-	"start_url": "./index.html",
-	"display": "standalone",
+    "start_url": "./index.html",
+    "display": "standalone",
     "icons": [
         {
             "src": "./icon/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
-			"purpose": "any maskable"
+            "purpose": "any maskable"
 
         },
         {
             "src": "./icon/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
-			"purpose": "any maskable"
+            "purpose": "any maskable"
 
         }
     ],
-	"orientation": "landscape",
-	"description": "Salto al Alivio",
-	"background_color": "#ffffff",
+    "orientation": "landscape",
+    "description": "Salto al Alivio",
+    "background_color": "#ffffff",
     "theme_color": "#ffffff"
-	
-	
+    
+    
 }

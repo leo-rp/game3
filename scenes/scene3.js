@@ -73,7 +73,7 @@ class Scene3 extends Phaser.Scene {
     	_this.add.image(550, 450, 'step2', 0).setOrigin(0,0);
     	_this.add.image(1300, 350, 'step3', 0).setOrigin(0,0);		
 		
-    	let playButton = this.add.image(1600, 840,'playButton').setInteractive();		
+    	let playButton = this.add.image(1600, 840,'playButton').setInteractive().setScale(0.7);		
 
     	playButton.on('pointerdown', function(){
 			gameMusic.startGame.play();		
