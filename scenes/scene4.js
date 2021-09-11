@@ -11,8 +11,7 @@ class Scene4 extends Phaser.Scene {
 	create(){
 		_this = this;			
 		
-		this.cameras.main.fadeIn(500);
-		//addBackGround('11');
+		this.cameras.main.fadeIn(500);		
 		_this.add.image(0, 0, 'background4A', 0).setOrigin(0,0);
 		_this.add.image(2880, 0, 'background4B', 0).setOrigin(0,0);
 		
@@ -76,7 +75,7 @@ class Scene4 extends Phaser.Scene {
     	game.player.setGravity(0, 1000)
     	_this.cameras.main.setBounds(0,0, cameraWidth, game.config.height);
     	_this.cameras.main.startFollow(game.player);
-    	//_this.cameras.main.setZoom(2);    	
+    	
     	
     	currentPlatform = game.lastPlatform ? game.lastPlatform: 0;
     	score = game.score ? game.score: 0;
@@ -101,23 +100,24 @@ class Scene4 extends Phaser.Scene {
     	goal.body.setSize(600, 100).setOffset(0, 750);
     	goal.setImmovable(true)
 
-    	
-    	
-    	let win = _this.physics.add.image(cameraWidth- 960, 540, 'scene4GoodJob');
+    	    	
+    	let win = _this.physics.add.image(cameraWidth- 960, 600, 'scene4GoodJob').setDepth(1);
     	win.setVisible(false);
-    	
+    	let winMusic = true;
     	updateProgressBar(currentPlatform)
 
     	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
     		/*win*/
 			if(game.player.body.touching.down && goal.body.touching.up){
 				game.player.setVelocityX(0.4);
-				game.player.setVelocityY(0);	
-				//win.x = _this.cameras.main.midPoint.x;
-				//win.y = _this.cameras.main.midPoint.y;
+				game.player.setVelocityY(0);			
 				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);				
 				game.lastPlatform = 0;
 				game.score = score;
+				if(winMusic){
+						gameMusic.win.play();						
+						winMusic = false;
+				}
 
 				this.time.delayedCall(600, () => {
 					win.setVisible(true);
@@ -136,7 +136,9 @@ class Scene4 extends Phaser.Scene {
 		});
 
 		_this.input.on('pointerup', function(){			
-			if(canLaunch){
+			
+			if(canLaunch && (pointer.x < 1800 && pointer.y > 200)){
+				gameMusic.jump.play();	
 				launch(touchDuration);
 				game.player.setTexture('player4');
 				game.player.body.setSize(200, 420)
@@ -151,10 +153,12 @@ class Scene4 extends Phaser.Scene {
 		if(game.player.y > (game.config.height + 400)){
 			game.lastPlatform = currentPlatform;
 			game.score = score;
+			gameMusic.lose.play();	
 			_this.scene.restart();
 		}
 
-		if(pointer.isDown && canLaunch){
+		if(pointer.isDown && canLaunch  && (pointer.x < 1800 && pointer.y > 200)){
+			
 			touchDuration+=6;
 			game.player.setTexture('player2');
 			game.player.body.setSize(100, 382)

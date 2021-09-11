@@ -11,12 +11,7 @@ class Scene1 extends Phaser.Scene {
 		_this = this;
 		
 		this.cameras.main.fadeIn(500);
-		//addBackGround('');
-
-
 		
-		
-
 		game.background = this.add.tileSprite(game.config.width/2, game.config.height/2, 1920, 1080, 'background');
 		let backgroundA = this.physics.add.image(0, -400,'backgroundPixels').setOrigin(0,0);
 		backgroundA.setGravity(0, 2000);
@@ -36,10 +31,7 @@ class Scene1 extends Phaser.Scene {
 		let title_invisible = this.physics.add.image(game.config.width/2, 850,'invisible');		
 		title_invisible.setImmovable(true);
 		title_invisible.body.allowGravity = false;
-		this.physics.add.collider(title, title_invisible);
-		
-		//gameMusic.mainTheme.loop = true;
-		//gameMusic.mainTheme.play();		
+		this.physics.add.collider(title, title_invisible);		
 		
 		addFullScreenButton('');
 		addSoundButton();		
@@ -47,22 +39,23 @@ class Scene1 extends Phaser.Scene {
 		score = 0;
 		game.score = 0;
 
+
+		gameMusic.mainTheme.loop = true;
+		gameMusic.mainTheme.play();		
+
 		playButton.on('pointerdown', function(){
-			//gameMusic.startGame.play();		
+			gameMusic.startGame.play();		
 			playButton.setTint(0xf18a00);				
 		});
 		
 		playButton.on('pointerup', function () {
 				this.scene.start('Scene2');
 		}, _this);
-
-
 	}
 	
 	update(){
 
 		game.background.tilePositionX+= 0.4;	
-
 		game.cloud.x--;
 		if(game.cloud.x < -300 ){
 			game.cloud.x = 2200;

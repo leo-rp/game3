@@ -11,8 +11,7 @@ class Scene5 extends Phaser.Scene {
 	create(){
 		_this = this;			
 		
-		this.cameras.main.fadeIn(500);
-		//addBackGround('11');
+		this.cameras.main.fadeIn(500);		
 		_this.add.image(0, 0, 'background5', 0).setOrigin(0,0);
 		_this.add.image(2800, 0, 'background5', 0).setOrigin(0,0);
 		_this.add.image(5600, 0, 'background5', 0).setOrigin(0,0);
@@ -71,12 +70,11 @@ class Scene5 extends Phaser.Scene {
 		game.player  = this.physics.add.image(250, 100, 'player1');		
 		game.player.body.setSize(100, 420)
 
-		game.player.setBounce(0.1);
-    	//game.player.setCollideWorldBounds(false); // don't go out of the map
+		game.player.setBounce(0.1);    	
     	game.player.setGravity(0, 1000)
     	_this.cameras.main.setBounds(0,0, cameraWidth, game.config.height);
     	_this.cameras.main.startFollow(game.player);
-    	//_this.cameras.main.setZoom(2);    	
+    	
     	
     	currentPlatform = game.lastPlatform ? game.lastPlatform: 0;
     	score = game.score ? game.score: 0;
@@ -89,13 +87,6 @@ class Scene5 extends Phaser.Scene {
     	_this.add.image(0, 990, 'backgroundBottom5', 0).setOrigin(0,0);
     	_this.add.image(2800, 990, 'backgroundBottom5', 0).setOrigin(0,0);
     	_this.add.image(5600, 990, 'backgroundBottom5', 0).setOrigin(0,0);
-    	
-		
-    	/*
-    	for(var i = 0; i< numPlatforms; i++){
-    		_this.physics.add.image(platforms[i].x - 60, game.config.height - 120, 'platformBottom').setOrigin(0,0);	
-    	}
-    	*/
 
     	game.player.x = platforms[currentPlatform].x + (platforms[currentPlatform].width/2);
     	game.player.y = platforms[currentPlatform].y - 220;
@@ -106,8 +97,9 @@ class Scene5 extends Phaser.Scene {
 
     	
     	
-    	let win = _this.physics.add.image(cameraWidth-960, 540, 'scene5GoodJob');
+    	let win = _this.physics.add.image(cameraWidth-960, 600, 'scene5GoodJob').setDepth(1);
     	win.setVisible(false);
+    	let winMusic = true;
     	
     	updateProgressBar(currentPlatform)
 
@@ -115,17 +107,19 @@ class Scene5 extends Phaser.Scene {
     		/*win*/
 			if(game.player.body.touching.down && goal.body.touching.up){
 				game.player.setVelocityX(0.4);
-				game.player.setVelocityY(0);	
-				//win.x = _this.cameras.main.midPoint.x;
-				//win.y = _this.cameras.main.midPoint.y;
+				game.player.setVelocityY(0);					
 				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);
 				game.lastPlatform = 0;
 				game.score = score;
 
+				if(winMusic){
+					gameMusic.win.play();						
+					winMusic = false;
+				}
+
 				this.time.delayedCall(600, () => {
 					win.setVisible(true);
 				});
-
 				
 				this.time.delayedCall(10000, () => {
 					this.scene.start('Scene6');
@@ -139,7 +133,8 @@ class Scene5 extends Phaser.Scene {
 		});
 
 		_this.input.on('pointerup', function(){			
-			if(canLaunch){
+			if(canLaunch && (pointer.x < 1800 && pointer.y > 200)){
+				gameMusic.jump.play();	
 				launch(touchDuration);
 				game.player.setTexture('player4');
 				game.player.body.setSize(200, 420)
@@ -158,10 +153,11 @@ class Scene5 extends Phaser.Scene {
 		if(game.player.y > (game.config.height + 400)){
 			game.lastPlatform = currentPlatform;
 			game.score = score;
+			gameMusic.lose.play();	
 			_this.scene.restart();
 		}
 
-		if(pointer.isDown && canLaunch){
+		if(pointer.isDown && canLaunch && (pointer.x < 1800 && pointer.y > 200)){
 			touchDuration+=6;
 			game.player.setTexture('player2');
 			game.player.body.setSize(100, 382)

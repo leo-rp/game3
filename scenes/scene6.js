@@ -12,14 +12,25 @@ class Scene6 extends Phaser.Scene {
 		_this = this;			
 		
 		this.cameras.main.fadeIn(500);
-		//addBackGround('11');
-		_this.add.image(0, 0, 'background1A', 0).setOrigin(0,0);
-		_this.add.image(2880, 0, 'background1B', 0).setOrigin(0,0);
 		
+		_this.add.image(0, 0, 'background6', 0).setOrigin(0,0).setScrollFactor(0);
+		game.water = [];
+		game.water[0] = _this.add.tileSprite(0, 230, 1920, 1080, 'water2').setOrigin(0,0).setScrollFactor(0);
+		game.water[1] = _this.add.tileSprite(0, 140, 1920, 216, 'water1').setOrigin(0,0).setScrollFactor(0);		
+		
+
+		game.water[2] = _this.add.tileSprite(0, 500, 1920, 675, 'waterBottom2', 0).setOrigin(0,0).setScrollFactor(0);		
+		game.water[3] = _this.add.tileSprite(0, 700, 1920, 403, 'waterBottom1', 0).setOrigin(0,0).setScrollFactor(0);		
+
+		for(var i = 0; i< 6; i++){    	
+			_this.add.image((i * 1920), 960, 'floor6A', 0).setOrigin(0,0);
+			_this.add.image((i * 1920), 780, 'floor6B', 0).setOrigin(0,0);
+		}
+				
 		let backgroundPixels = _this.add.image(0, 0, 'backgroundPixels', 0).setOrigin(0,0);
 		backgroundPixels.setScrollFactor(0);
+		
 		pointer = _this.input.activePointer;
-
 
 		addFullScreenButton('');	
 		addSoundButton();		
@@ -63,19 +74,15 @@ class Scene6 extends Phaser.Scene {
     	let style = {fontFamily: 'gotham-bold', fontSize: 60, color: "#ffffff", align: 'center', fontStyle: 'italic'};
 		game.scoreText = this.add.text(1600, 65, score+"", style);
 		game.scoreText.setScrollFactor(0);
-		
-
 
 		/*player*/		
 		game.player  = this.physics.add.image(250, 100, 'player1');		
 		game.player.body.setSize(100, 420)
 
 		game.player.setBounce(0.1);
-    	//game.player.setCollideWorldBounds(false); // don't go out of the map
     	game.player.setGravity(0, 1000)
     	_this.cameras.main.setBounds(0,0, cameraWidth, game.config.height);
-    	_this.cameras.main.startFollow(game.player);
-    	//_this.cameras.main.setZoom(2);    	
+    	_this.cameras.main.startFollow(game.player);    	
     	
     	currentPlatform = game.lastPlatform ? game.lastPlatform: 0;
     	score = game.score ? game.score: 0;
@@ -85,14 +92,11 @@ class Scene6 extends Phaser.Scene {
     	for(var i = 0; i< numPlatforms; i++){
     		addPlatform(i);	
     	}
-    	_this.add.image(0, 990, 'backgroundBottom1A', 0).setOrigin(0,0);
-    	_this.add.image(2880, 990, 'backgroundBottom1B', 0).setOrigin(0,0);		
-		
 
-    	for(var i = 0; i< numPlatforms; i++){
-    		_this.physics.add.image(platforms[i].x - 60, game.config.height - 120, 'platformBottom').setOrigin(0,0);	
+		for(var i = 0; i< 6; i++){    	
+    		_this.add.image((i * 1920), 990, 'backgroundBottom6', 0).setOrigin(0,0);    	
     	}
-
+		
     	game.player.x = platforms[currentPlatform].x + (platforms[currentPlatform].width/2);
     	game.player.y = platforms[currentPlatform].y - 220;
 
@@ -100,11 +104,9 @@ class Scene6 extends Phaser.Scene {
     	goal.body.setSize(600, 100).setOffset(-100, 750);
     	goal.setImmovable(true)
 
-    	
-    	
-    	let win = _this.physics.add.image(cameraWidth-960, 540, 'scene6GoodJob');
+    	let win = _this.physics.add.image(cameraWidth-960, 600, 'scene6GoodJob').setDepth(1);
     	win.setVisible(false);
-    	
+    	let winMusic = true;
     	updateProgressBar(currentPlatform)
 
     	_this.physics.add.collider(game.player, goal, (player, goal) =>{			
@@ -112,30 +114,40 @@ class Scene6 extends Phaser.Scene {
 			if(game.player.body.touching.down && goal.body.touching.up){
 				game.player.setVelocityX(0.4);
 				game.player.setVelocityY(0);	
-				//win.x = _this.cameras.main.midPoint.x;
-				//win.y = _this.cameras.main.midPoint.y;
 				game.progressBarFill.setCrop(0, 0, game.progressBarFill.width, game.progressBarFill.height);
 				game.lastPlatform = 0;
 				game.score = score;
+				
+				if(winMusic){
+					addBubbles();
+					gameMusic.win.play();						
+					winMusic = false;
+				}
+
 
 				this.time.delayedCall(600, () => {
 					win.setVisible(true);
 				});
 
 				
-				this.time.delayedCall(10000, () => {
+				this.time.delayedCall(20000, () => {
 					this.scene.start('Scene1');
 				});
-			}
-			
+			}			
 		});		
 
-
+    	let canAddBubbles = true;
 		_this.input.on('pointerdown', function(){
+			if(canAddBubbles){
+				addBubbles();
+				canAddBubbles = false;
+			}
 		});
 
-		_this.input.on('pointerup', function(){			
-			if(canLaunch){
+		_this.input.on('pointerup', function(){	
+			canAddBubbles = true;		
+			if(canLaunch && (pointer.x < 1800 && pointer.y > 200)){
+				gameMusic.jump.play();	
 				launch(touchDuration);
 				game.player.setTexture('player4');
 				game.player.body.setSize(200, 420)
@@ -143,17 +155,30 @@ class Scene6 extends Phaser.Scene {
 				touchDuration = 0;
 			}
 		});
+
+		bubbles = [];
+		lastBubbles = 0;
 	}
 		
 	update(){
-		
+
+		game.water[0].tilePositionX+= 2;	
+		game.water[1].tilePositionX-= 2;	
+		game.water[2].tilePositionX+= 0.5;	
+		game.water[3].tilePositionX-= 0.5;	
+
+		updateBubbles();
+
 		if(game.player.y > (game.config.height + 400)){
 			game.lastPlatform = currentPlatform;
 			game.score = score;
+			gameMusic.lose.play();
+			
 			_this.scene.restart();
 		}
 
-		if(pointer.isDown && canLaunch){
+		if(pointer.isDown && canLaunch && (pointer.x < 1800 && pointer.y > 200)){
+		
 			touchDuration+=6;
 			game.player.setTexture('player2');
 			game.player.body.setSize(100, 382)

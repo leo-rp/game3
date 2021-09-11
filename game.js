@@ -28,6 +28,10 @@
 	let touchDuration = 0;
 	let canLaunch;
 	let snowFlakes = [];
+	let bubbles = [];
+	let lastBubbles =0;
+	let counter = 0;
+
 	if(DEBUG){
 		backgroundColor	= '#000fff';
 	}else{
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				width: 1920, height: 1080
 			},
 			audio: {
-				disableWebAudio: true
+				disableWebAudio: false
 			},
 			physics: {
 				default: 'arcade',
@@ -69,24 +73,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	
 	/**/
-	function addBackGround(n){
-		
-		_this.scale.lockOrientation('landscape');
-
-		if(!DEBUG){
-			graphics = _this.add.graphics();
-			graphics.fillStyle(0xffffff, 1);
-			graphics.fillRect(0, 0, game.config.width, game.config.height );			
-			_this.backgroundImage = _this.add.image(0, 0, 'background'+n, 0).setOrigin(0,0);
-			_this.backgroundImageA = _this.add.image(0, 0, 'backgroundA', 0).setOrigin(0,0);
-
-
-			//_this.backgroundImage.setScrollFactor(0);
-			_this.backgroundImageA.setScrollFactor(0);
-		}
-	}
-	
-	
 	function checkOrientation(orientation){	
 		if(orientation === Phaser.Scale.PORTRAIT){			
 			warningImg = _this.add.image(game.config.width/2, game.config.height/2, 'rotateDevice', 0);
@@ -107,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			var soundButton = _this.add.image(game.config.width-24, 126, 'soundButton', 0).setOrigin(1, 0).setInteractive();
 			soundButton.setScrollFactor(0)
 
-			
 			if(_this.sound.mute){
 				soundButton.setFrame(1);
 			}else{
@@ -129,22 +114,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			
 			soundButton.on('pointerdown', function(){
 				soundButton.clearTint();
-			})
-	}
-	
-	function addBackButton(){
-			var backButton = _this.add.image(game.config.width-54, 250, 'homeButton', 0).setInteractive();
-			backButton.setScrollFactor(0);
-			
-			backButton.on('pointerdown', function(){
-				backButton.setTint(0xa61bc9);	
-				gameMusic.startGame.play();
-			});			
-			
-			backButton.on('pointerup', function(){				
-				//_this.time.delayedCall(2000, () => {
-					_this.scene.start('Scene5');					
-				//});		
 			})
 	}
 	
@@ -191,41 +160,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 	
 
-	function collides(a, b ){
-		let collision = false;
-
-		let x1 = a.x - (a.width/2);
-		let w1 = a.width;
-		let y1 = a.y - (a.height/2);
-		let h1 = a.height;
-
-		let x2 = b.x - (b.width/2);
-		let w2 = b.width;
-		let y2 = b.y - (b.height/2);
-		let h2 = b.height;
-
-		let s1 = x1 + w1; // r1 right edge past r2 left
-		let s2 = x2 + w2; // r1 left edge past r2 right
-		let s3 = y1 + h1; // r1 top edge past r2 bottom
-		let s4 = y2 + h2; // r1 bottom edge past r2 top*/
-
-		if( x2 >= s1 || s2 <= x1 || y2 >= s3 || s4 <= y1 ){
-			collision =  false;
-			return true;
-		}else{
-			collision = true;
-			if(DEBUG){		
-				var drop = _this.add.graphics();
-				drop.fillStyle(0x222222, 0.8);
-				drop.fillRect(270, 1500, 550, 150);
-			}
-			return false;
-			
-		}
-	}
-
-	function addPlatform(n){
-		//let y = 700;
+	
+	function addPlatform(n){		
 		let forceX = 0;
 	    let forceY = 0;
 
@@ -244,8 +180,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				game.player.setTexture('player1');
 				game.player.body.setSize(100, 420)
 				if(platform.id == currentPlatform){			
-				}else{			
+				}else{						
 					currentPlatform = platform.id;
+					addBubbles();		
 					score+=10;
 					updateProgressBar(currentPlatform);
 				}
@@ -256,19 +193,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		});			
 	}
 	
-	function launch(forceY){
-		
 
+	function launch(forceY){	
 		forceX = 400;			
 		game.player.setVelocityX(forceX);
 		forceY = forceY * 4;
 		forceY+= 200;		
 		forceY = forceY > 1500 ? 1500 : forceY;
 		game.player.setVelocityY(-forceY);
-
-		///console.log(forceY);	
-
 		
+		addBubbles();
 		_this.tweens.add({
                 targets: platforms[currentPlatform],
                 y: level_platformsY[currentPlatform],
@@ -310,18 +244,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	function updateSnowFlakes(){
 		for(let i = 0; i < snowFlakes.length; i++){				
-			/*if(snowFlakes[i].ticks != 0){
-				snowFlakes[i].ticks--;				
-			}else{
-				snowFlakes[i].ticks = randomByRange(1024);
-				if(snowFlakes[i].frame.name < 2 ){
-					snowFlakes[i].frame.name++;				
-				}else{
-					snowFlakes[i].frame.name = 0;
-				}
-				snowFlakes[i].setFrame(snowFlakes[i].frame.name);
-			}*/
-			
 			if(snowFlakes[i].y < game.config.height){				
 				snowFlakes[i].y+= snowFlakes[i].speed;
 				snowFlakes[i].x--;				
@@ -333,3 +255,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}	
 	}
 	
+
+	/*bubbles functions */
+	function addBubbles(){
+		if(_this.scene.scene.scene.key == 'Scene6'){
+			for(let i = 0; i < 9; i++){
+				let x = randomByRange(platforms[currentPlatform].width) + platforms[currentPlatform].x;			
+				let y = randomByRange(platforms[currentPlatform].y);
+				let frame = randomByRange(3);
+				frame = frame > 2 ? 2 : frame;				
+
+				bubbles[i+lastBubbles] = _this.add.image(x, y, 'bubbles', frame).setOrigin(0, 0);
+				bubbles[i+lastBubbles].speed = (randomByRange(10) * 0.2);
+				bubbles[i+lastBubbles].ticks = randomByRange(1024);
+				bubbles[i+lastBubbles].setAlpha(randomByRange(10) * 0.2);
+				
+			}
+			lastBubbles+= 9;
+		}
+	}
+	
+	
+	function updateBubbles(){
+		for(let i = 0; i < bubbles.length; i++){				
+			if(bubbles[i].y > -64){				
+				bubbles[i].y-= bubbles[i].speed;							
+			}else{
+				bubbles[i].setAlpha(randomByRange(10) * 0.2);
+				bubbles[i].y = -100  				
+			}			
+		}	
+	}

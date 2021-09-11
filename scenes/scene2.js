@@ -11,8 +11,7 @@ class Scene2 extends Phaser.Scene {
 	create(){
 		_this = this;			
 		
-		this.cameras.main.fadeIn(500);
-		//addBackGround('');				
+		this.cameras.main.fadeIn(500);		
 		
 		game.background = this.add.tileSprite(game.config.width/2, game.config.height/2, 1920, 1080, 'background');
 		let backgroundA = this.add.image(0, 0,'backgroundPixels').setOrigin(0,0);
@@ -23,7 +22,7 @@ class Scene2 extends Phaser.Scene {
 		addFullScreenButton('');	
 		addSoundButton();
 		this.time.delayedCall(10000, () => {
-				this.scene.start('Scene4');
+				this.scene.start('Scene3');
 		});		
 	}
 	

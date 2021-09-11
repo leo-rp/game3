@@ -1,6 +1,6 @@
 {
-    "name": "Alivio GYM",
-    "short_name": "Alivio GYM",
+    "name": "Salto al Alivio",
+    "short_name": "Salto al Alivio",
 	"start_url": "./index.html",
 	"display": "standalone",
     "icons": [
@@ -20,7 +20,7 @@
         }
     ],
 	"orientation": "landscape",
-	"description": "Alivio GYM",
+	"description": "Salto al Alivio",
 	"background_color": "#ffffff",
     "theme_color": "#ffffff"
 	
