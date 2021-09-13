@@ -122,7 +122,7 @@ class Scene4 extends Phaser.Scene {
 		});
 
 
-		game.nextSceneButton = this.add.image(5320, 910,'nextSceneButton').setInteractive().setScale(0.5).setDepth(1);
+		game.nextSceneButton = this.add.image(5360, 960,'nextSceneButton').setInteractive().setScale(1).setDepth(1);
 		game.nextSceneButton.setVisible(false);
 		game.nextSceneButton.on('pointerdown', function(){
 			gameMusic.startGame.play();		

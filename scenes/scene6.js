@@ -53,7 +53,7 @@ class Scene6 extends Phaser.Scene {
 
 		level_platformsX = [100, 880, 1800, 2700, 3600, 4600, 5500, 6250, 7150, 7950];
 		level_platformsY = [790, 780, 830, 850, 760, 870, 740, 800, 720, 820];
-		level_platformsColor = [3, 4, 1, 5, 2, 5, 4, 1, 7, 3];
+		level_platformsColor = [1, 4, 3, 5, 2, 5, 4, 1, 7, 3];
         let numPlatforms = 10;
         let goalX = 8600;        
         let cameraWidth = 9000;
@@ -109,7 +109,7 @@ class Scene6 extends Phaser.Scene {
     	let winMusic = true;
     	updateProgressBar(currentPlatform)
 
-    	game.nextSceneButton = this.add.image(8630, 880,'nextSceneButton').setInteractive().setScale(0.5).setDepth(1);
+    	game.nextSceneButton = this.add.image(8650, 930,'nextSceneButton').setInteractive().setScale(1).setDepth(1);
 		game.nextSceneButton.setVisible(false);
 		game.nextSceneButton.on('pointerdown', function(){
 			gameMusic.startGame.play();		
